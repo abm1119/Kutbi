@@ -1,0 +1,56 @@
+# Kutbi design system: soft paper surfaces, ink typography, violet signal.
+
+[theme]
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap"
+codeFont = "JetBrains Mono:https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+baseFontSize = 15
+baseFontWeight = 400
+headingFontSizes = ["38px", "28px", "21px", "17px", "14px", "12px"]
+headingFontWeights = [700, 700, 650, 600, 600, 500]
+baseRadius = "12px"
+buttonRadius = "10px"
+linkUnderline = false
+showWidgetBorder = true
+showSidebarBorder = true
+
+[theme.light]
+primaryColor = "#635bff"
+backgroundColor = "#fbfbfd"
+secondaryBackgroundColor = "#f2f1f8"
+textColor = "#18181b"
+linkColor = "#554ce6"
+borderColor = "#e5e3ee"
+codeBackgroundColor = "#f2f1f8"
+greenColor = "#16845b"
+redColor = "#c84242"
+orangeColor = "#b86b16"
+blueColor = "#3671b8"
+violetColor = "#635bff"
+
+[theme.light.sidebar]
+backgroundColor = "#f4f3f9"
+secondaryBackgroundColor = "#ebeaf3"
+borderColor = "#e2e0eb"
+
+[theme.dark]
+primaryColor = "#a79bff"
+backgroundColor = "#0d0d12"
+secondaryBackgroundColor = "#171720"
+textColor = "#f5f3fb"
+linkColor = "#b9b1ff"
+borderColor = "#2a2936"
+codeBackgroundColor = "#171720"
+greenColor = "#58c49a"
+redColor = "#f08080"
+orangeColor = "#e6a554"
+blueColor = "#79aef2"
+violetColor = "#a79bff"
+
+[theme.dark.sidebar]
+backgroundColor = "#13131b"
+secondaryBackgroundColor = "#1b1b25"
+borderColor = "#2a2936"
+
+[server]
+runOnSave = true
