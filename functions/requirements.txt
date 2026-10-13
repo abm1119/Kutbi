@@ -6,7 +6,7 @@ fastapi>=0.109.0
 uvicorn>=0.27.0
 starlette>=0.35.0
 asgiref>=3.7.0
-werkzeug>=3.0.0
+werkzeug>=3.1.9
 
 # YouTube
 yt-dlp>=2024.1.0
