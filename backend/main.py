@@ -287,8 +287,22 @@ async def discover_videos(request: DiscoverVideosRequest):
             message=f"Fetched {len(videos)} latest videos for {channel_info.channel_name}.",
         )
     except Exception as e:
-        logger.error(f"Failed to discover videos for {request.source_input}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e)
+        logger.error(f"Failed to discover videos for {request.source_input}: {error_msg}")
+        
+        # Extract user-friendly error message from common YouTube errors
+        if "Sign in to confirm" in error_msg or "not a bot" in error_msg:
+            detail = "YouTube requires authentication to access this content. Please ensure cookies are configured."
+        elif "Could not fetch" in error_msg or "Could not get" in error_msg:
+            detail = f"Could not fetch video details. Please check the URL and try again. Error: {error_msg[:100]}"
+        elif "Channel" in error_msg and "not found" in error_msg.lower():
+            detail = "Channel not found. Please verify the channel URL or ID."
+        elif "Video" in error_msg and "not found" in error_msg.lower():
+            detail = "Video not found or is not accessible. Please verify the video URL or ID."
+        else:
+            detail = error_msg[:200]  # Truncate very long error messages
+            
+        raise HTTPException(status_code=500, detail=detail)
 
 
 @app.post("/api/v1/process-videos", response_model=ProcessChannelResponse)

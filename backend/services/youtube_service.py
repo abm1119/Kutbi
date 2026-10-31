@@ -8,6 +8,7 @@ import os
 import re
 import tempfile
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 from urllib.parse import parse_qs, urlparse
 
@@ -29,6 +30,16 @@ class YouTubeService:
     
     def __init__(self):
         """Initialize YouTube service with yt-dlp options."""
+        # Find cookies file
+        cookies_path = None
+        project_root = Path(__file__).resolve().parent.parent.parent
+        cookies_file = project_root / "cookies.txt"
+        if cookies_file.exists():
+            cookies_path = str(cookies_file)
+            logger.info(f"Using YouTube cookies from: {cookies_path}")
+        else:
+            logger.warning(f"Cookies file not found at: {cookies_file}")
+        
         self.ydl_opts = {
             "quiet": True,
             "no_warnings": True,
@@ -36,6 +47,10 @@ class YouTubeService:
             "ignoreerrors": False,
             "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
         }
+        
+        # Add cookies if available
+        if cookies_path:
+            self.ydl_opts["cookiefile"] = cookies_path
     
     def extract_channel_id(self, url_or_id: str) -> str:
         """
@@ -473,15 +488,14 @@ class YouTubeService:
             Transcript text or None
         """
         try:
-            # Correct method is fetch()
-            transcript_items = YouTubeTranscriptApi.fetch(
+            transcript = YouTubeTranscriptApi().fetch(
                 video_id,
                 languages=languages,
             )
             texts = [
-                item.get("text", "").strip()
-                for item in transcript_items
-                if item.get("text", "").strip()
+                snippet.text.strip()
+                for snippet in transcript.snippets
+                if snippet.text.strip()
             ]
             transcript = " ".join(texts).strip()
             if transcript:

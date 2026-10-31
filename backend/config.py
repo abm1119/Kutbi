@@ -94,8 +94,9 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("max_tokens_per_chunk", "MAX_TOKENS_PER_CHUNK")
     )
     request_timeout: int = Field(
-        default=60,
-        validation_alias=AliasChoices("request_timeout", "REQUEST_TIMEOUT")
+        default=600,
+        validation_alias=AliasChoices("request_timeout", "REQUEST_TIMEOUT"),
+        description="Timeout for external API requests (e.g., OpenRouter, Notion). In seconds. Default 600s (10 min) for LLM calls."
     )
     
     # Processing Settings

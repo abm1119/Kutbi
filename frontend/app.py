@@ -46,6 +46,10 @@ def _initialize_state() -> None:
     for key, value in defaults.items():
         st.session_state.setdefault(key, value)
 
+    pending_tab = st.session_state.pop("pending_tab_selector", None)
+    if pending_tab is not None:
+        st.session_state.tab_selector = pending_tab
+
 
 def _render_sidebar(api_client: APIClient) -> None:
     """Render compact global settings and connection controls."""
@@ -163,9 +167,10 @@ def _run_processing(
                 llm_model=st.session_state.llm_model_input,
             )
         st.session_state.last_results = response
-        st.session_state.tab_selector = "Results"
         status.update(label="Guide ready", state="complete", expanded=False)
         st.toast("Your guide is ready")
+        st.session_state.pending_tab_selector = "Results"
+        st.rerun()
     except Exception as exc:
         status.update(label="Synthesis failed", state="error", expanded=True)
         st.error(f"We could not finish this guide: {exc}")
@@ -212,7 +217,11 @@ def _render_discovery(api_client: APIClient) -> None:
                     status.update(
                         label="Discovery failed", state="error", expanded=True
                     )
-                    st.error(f"We could not read that source: {exc}")
+                    error_text = str(exc)
+                    # Shorten very long error messages (HTTPConnectionPool errors)
+                    if len(error_text) > 300:
+                        error_text = error_text[:300] + "…"
+                    st.error(f"We could not read that source: {error_text}")
 
     discovery = st.session_state.get("discovery_response")
     if not discovery:

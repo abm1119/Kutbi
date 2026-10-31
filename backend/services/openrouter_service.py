@@ -302,7 +302,7 @@ You MUST respond with a valid JSON object matching this exact schema:
   "implementation_steps": ["Detailed step-by-step guide. Be SPECIFIC with commands, settings, and configurations"],
   "code_snippets": [
     {
-      "language": "programming language",
+      "language": "one of: python, javascript, typescript, java, c, c++, c#, go, rust, ruby, php, bash, shell, sql, html, css, json, yaml, xml, docker, dockerfile, gradle, maven, makefile, powershell, swift, kotlin, scala, r, matlab, lua, perl, groovy, hcl, terraform, graphql, markdown, plain text",
       "code": "the actual code - preserve formatting",
       "description": "What this code does and when to use it",
       "explicit_or_suggested": "explicit if verbatim from transcript, suggested if you're providing an example"

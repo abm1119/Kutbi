@@ -441,20 +441,95 @@ class NotionService:
 
         language = language.lower().strip()
         
-        # Common mappings
+        # Comprehensive mappings for common language variations and aliases
         mappings = {
+            # Abbreviations
             "js": "javascript",
             "ts": "typescript",
             "py": "python",
             "rb": "ruby",
             "yml": "yaml",
+            "yaml": "yaml",
             "sh": "bash",
             "shell": "bash",
             "zsh": "bash",
+            "ksh": "bash",
+            
+            # Common aliases
             "golang": "go",
             "dockerfile": "docker",
             "text": "plain text",
             "txt": "plain text",
+            "plaintext": "plain text",
+            
+            # API and web-related
+            "http": "plain text",
+            "http/api": "plain text",
+            "rest": "plain text",
+            "rest api": "plain text",
+            "api": "plain text",
+            "curl": "bash",
+            "wget": "bash",
+            
+            # Database related
+            "postgres": "sql",
+            "postgresql": "sql",
+            "mysql": "sql",
+            "sqlite": "sql",
+            "sqlserver": "sql",
+            "t-sql": "sql",
+            "plsql": "sql",
+            
+            # Markup/Template languages
+            "htm": "html",
+            "scss": "scss",
+            "sass": "sass",
+            "less": "less",
+            "vue": "html",
+            "jsx": "javascript",
+            "tsx": "typescript",
+            
+            # Config files
+            "env": "plain text",
+            "toml": "toml",
+            "ini": "plain text",
+            "conf": "plain text",
+            "cfg": "plain text",
+            "properties": "plain text",
+            
+            # Scripting
+            "powershell": "powershell",
+            "ps1": "powershell",
+            "batch": "bash",
+            "bat": "bash",
+            "cmd": "bash",
+            
+            # Other common variations
+            "csharp": "c#",
+            "cplusplus": "c++",
+            "cpp": "c++",
+            "objective-c": "objective-c",
+            "objc": "objective-c",
+            "fsharp": "f#",
+            "visualbasic": "visual basic",
+            "vb": "visual basic",
+            "coffeescript": "coffeescript",
+            "coffee": "coffeescript",
+            "erlang": "erlang",
+            "elixir": "elixir",
+            "clojure": "clojure",
+            "rust": "rust",
+            "golang": "go",
+            "swift": "swift",
+            "kotlin": "kotlin",
+            "scala": "scala",
+            "haskell": "haskell",
+            "erlang": "erlang",
+            "prolog": "prolog",
+            "perl": "perl",
+            "r": "r",
+            "matlab": "matlab",
+            "lua": "lua",
         }
         
         normalized_lang = mappings.get(language, language)

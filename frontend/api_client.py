@@ -7,6 +7,8 @@ from urllib.parse import urlparse
 from typing import Optional
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 class APIClient:
@@ -14,7 +16,7 @@ class APIClient:
 
     def __init__(self, base_url: str = None):
         """
-        Initialize API client.
+        Initialize API client with retry and connection pooling.
 
         Args:
             base_url: Backend API base URL. Defaults to BACKEND_URL env var or local dev URLs.
@@ -22,8 +24,24 @@ class APIClient:
         configured_base_url = base_url or os.getenv("BACKEND_URL", "")
         self.candidate_urls = self._build_candidate_urls(configured_base_url)
         self.base_url = self.candidate_urls[0]
+        
+        # Create session with retry strategy for resilience
         self.session = requests.Session()
-        self.timeout = 300  # 5 minutes for long operations
+        
+        # Configure retry strategy: retry on connection errors, 3xx/5xx with exponential backoff
+        # Note: 'allowed_methods' is the modern parameter name (older versions used 'method_whitelist')
+        retry_strategy = Retry(
+            total=3,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["POST", "GET"],  # Modern urllib3 parameter name
+            backoff_factor=1  # 1s, 2s, 4s between retries
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy, pool_connections=10, pool_maxsize=10)
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
+        
+        # Timeout for long operations (e.g., LLM synthesis can take 5-15 minutes)
+        self.timeout = 900  # 15 minutes for processing multiple videos with LLM
 
     @staticmethod
     def _normalize_url(url: str) -> str:
